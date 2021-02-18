@@ -12,17 +12,17 @@ const categoriesRoutes = require("./src/routes/categories.routes");
 const chapterRoutes = require("./src/routes/chapters.routes");
 const userRoutes = require("./src/routes/users.routes");
 
-// Using Routes
-app.use("/api/courses", coursesRoutes);
-app.use("/api/categories", categoriesRoutes);
-app.use("/api/chapters", chapterRoutes);
-app.use("/api/users", userRoutes);
-
 // Using middlewares to all the requests
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(morgan("dev"));
+
+// Using Routes
+app.use("/api/courses", coursesRoutes);
+app.use("/api/categories", categoriesRoutes);
+app.use("/api/chapters", chapterRoutes);
+app.use("/api/users", userRoutes);
 
 // Using Cross Origin middelware
 app.use((req, res, next) => {
