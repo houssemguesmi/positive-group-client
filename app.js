@@ -7,10 +7,10 @@ const session = require("express-session");
 const morgan = require("morgan");
 
 // Importing Routes
-const coursesRoutes = require("./src/routes/courses.route");
-const categoriesRoutes = require("./src/routes/categories.route");
-const chapterRoutes = require("./src/routes/chapters.route");
-const userRoutes = require("./src/routes/users.route");
+const coursesRoutes = require("./src/routes/course.routes");
+const categoriesRoutes = require("./src/routes/categories.routes");
+const chapterRoutes = require("./src/routes/chapters.routes");
+const userRoutes = require("./src/routes/users.routes");
 
 // Using Routes
 app.use("/api/courses", coursesRoutes);

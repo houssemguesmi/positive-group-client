@@ -3,6 +3,6 @@ const coursesController = require("../controllers/courses.controller");
 const authenticateToken = require("../middlewares/authenticateToken");
 
 // Retrieving existing Courses
-router.get("/", authenticateToken, coursesController.getAllCourses);
+router.get("/", coursesController.getAllCourses);
 
 module.exports = router;
