@@ -53,4 +53,28 @@ module.exports = {
       res.status(500).send();
     }
   },
+
+  generateCode: async (req, res) => {
+    try {
+      // getting the user requesting the code
+      let user = await repository.findOneById(req.params.id, User)
+      // Generating the random 10 characters code
+      let result = '';
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      const charactersLength = characters.length;
+      for (var i = 0; i < 10; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      }
+      // Adding the generated code to the user
+      user["code"] = result;
+      // Saving the new user to the Database
+      const updatedUser = await repository.save(user, User);
+      // Returning the response
+      res.status(200).send({ code: result })
+    } catch (error) {
+      console.error(error);
+      res.status(500).send();
+    }
+  }
+
 };

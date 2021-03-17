@@ -12,6 +12,7 @@ const userSchema = new Schema({
   isActivated: Boolean,
   invitees: Array,
   inviter: String,
+  code: String,
   bonus: Number, // To be changed with calculation
 });
 
