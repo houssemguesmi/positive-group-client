@@ -19,7 +19,15 @@ module.exports = {
     return model.findById(id);
   },
 
-  findOne: (filter, model) => {
-    return model.findOne(filter);
+  findOne: (data, model) => {
+    return model.findOne(data);
+  },
+
+  find: (filter, model) => {
+    return model.find(filter);
+  },
+
+  findOneAndUpdate: (filter, payload, model) => {
+    return model.findOneAndUpdate(filter, payload, { useFindAndModify: false });
   },
 };

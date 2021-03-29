@@ -1,4 +1,5 @@
 const Chapter = require("../models/Chapter");
+const Course = require("../models/Course");
 const repository = require("../repositories/base.repository");
 
 module.exports = {
@@ -10,7 +11,15 @@ module.exports = {
       console.error(e);
     }
   },
-
+  getChapters: async (req, res) => {
+    try {
+      const course = await repository.findOneById(req.params.id, Course);
+      var chapters = await repository.find({ course: course.name }, Chapter);
+      res.status(200).send(chapters);
+    } catch (e) {
+      console.error(e);
+    }
+  },
   getOneChapter: async (req, res) => {
     try {
     } catch (e) {
