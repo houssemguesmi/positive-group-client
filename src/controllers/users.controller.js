@@ -1,5 +1,6 @@
 require("dotenv").config();
 const User = require("../models/User");
+const BonusTree = require("../models/BonusTree")
 const repository = require("../repositories/base.repository");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -84,19 +85,51 @@ module.exports = {
 
   signup: async (req, res) => {
     try {
+
       let userData = req.body;
-      if (req.code) {
+
+      if (userData.code) {
+
         // Getting the invitor via his invitation code
-        const inviter = await repository.findOne({ code: code }, User);
+        const inviter = await repository.findOne({ code: userData.code }, User);
+
         // Storing the inviterId in the new user
         userData.inviter = inviter._id;
+        // Hashing the password
+        userData.password = await bcrypt.hash(userData.password, 10);
+
+        // Storing the user
+        const user = await repository.save(userData, User);
+
+        // Getting Inviter's Bonus Tree
+        const inviterBonusTree = await BonusTree.findOne({ user_id: userData.inviter })
+
+        // Checking if BonusTree exists for the inviter and Adding invitee
+        if (inviterBonusTree) {
+
+          await BonusTree.updateOne({ user_id: userData.inviter }, { $addToSet: { invitees: user._id } })
+
+        } else {
+
+          let inviterData = {
+            user_id: userData.inviter,
+            invitees: [user._id]
+          }
+          await BonusTree.create(inviterData)
+          console.log("Created Bonus Tree for Inviter!")
+
+        }
+
+
+      } else {
+
+        // Storing the user
+        await repository.save(userData, User);
+
       }
-      // Hashing the password
-      userData.password = await bcrypt.hash(userData.password, 10);
-      // Storing the user
-      const user = await repository.save(userData, User);
+
       // Sending back the response
-      res.status(201).send({ message: "Created!", user: user });
+      res.status(201).send({ message: "Created!" });
     } catch (e) {
       console.error(e);
       res.status(500).send();
@@ -130,6 +163,20 @@ module.exports = {
     try {
       // Get user id from params
       let userId = req.params.id;
+
+    } catch (err) {
+      console.error(err)
+    }
+  },
+
+  getBonusTree: async (req, res) => {
+    try {
+      // Get user id from params
+      let userId = req.params.id;
+      // const bonusTree = await BonusTree.findOne({ user_id: userId })
+      const bonusTree = await BonusTree.find({})
+      console.log(bonusTree)
+      res.send(bonusTree)
 
     } catch (err) {
       console.error(err)
