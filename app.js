@@ -38,12 +38,4 @@ app.use((req, res, next) => {
   next();
 });
 
-// Use express.static for frontend
-app.use("/", express.static(path.join(__dirname, "client/dist")));
-
-// Send back the client side
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "client/dist/index.html"));
-});
-
 module.exports = app;
