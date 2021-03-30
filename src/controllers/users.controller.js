@@ -66,6 +66,7 @@ module.exports = {
       res.status(500).send(e);
     }
   },
+
   getUserByToken: async (req, res) => {
     try {
       let userEmail = jwtDecode(req.params.token).email;
@@ -80,17 +81,28 @@ module.exports = {
       res.status(500).send(e);
     }
   },
+
   signup: async (req, res) => {
     try {
       let userData = req.body;
+      if (req.code) {
+        // Getting the invitor via his invitation code
+        const inviter = await repository.findOne({ code: code }, User);
+        // Storing the inviterId in the new user
+        userData.inviter = inviter._id;
+      }
+      // Hashing the password
       userData.password = await bcrypt.hash(userData.password, 10);
+      // Storing the user
       const user = await repository.save(userData, User);
-      res.status(201).send({ user });
+      // Sending back the response
+      res.status(201).send({ message: "Created!", user: user });
     } catch (e) {
       console.error(e);
       res.status(500).send();
     }
   },
+
   generateCode: async (req, res) => {
     try {
       // getting the user requesting the code
