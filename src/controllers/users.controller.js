@@ -68,13 +68,23 @@ module.exports = {
       // Adding the generated code to the user
       user["code"] = result;
       // Saving the new user to the Database
-      const updatedUser = await repository.save(user, User);
+      await repository.save(user, User);
       // Returning the response
       res.status(200).send({ code: result })
     } catch (error) {
       console.error(error);
       res.status(500).send();
     }
-  }
+  },
+
+  calculateBonus: async (req, res) => {
+    try {
+      // Get user id from params
+      let userId = req.params.id;
+
+    } catch (err) {
+      console.error(err)
+    }
+  },
 
 };
