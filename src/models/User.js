@@ -7,12 +7,11 @@ const userSchema = new Schema({
   birthDate: Date,
   gender: String,
   job: String,
-  email: String,
+  email: { type: String, unique: true },
   password: String,
   isActivated: Boolean,
   invitees: Array,
   inviter: String,
-  code: String,
   bonus: Number, // To be changed with calculation
 });
 
