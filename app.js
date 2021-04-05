@@ -21,6 +21,9 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cors());
+app.use(corsMiddleware());
+app.use(authenticateToken());
+app.use(errorHandler());
 
 // Using Routes
 app.use("/api/courses", coursesRoutes);
@@ -28,6 +31,13 @@ app.use("/api/categories", categoriesRoutes);
 app.use("/api/chapters", chapterRoutes);
 app.use("/api/users", userRoutes);
 
+/**
+ * API Documentation with Swagger.
+ */
+const swaggerUi = require("swagger-ui-express"),
+    YAML = require("yamljs");
+swaggerDocument = YAML.load("./swagger.yaml");
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 module.exports = app;

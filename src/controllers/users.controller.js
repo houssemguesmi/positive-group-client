@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 const jwtDecode = require("jwt-decode");
 
 module.exports = {
+
   login: async (req, res) => {
     try {
       const userData = await repository.findOne(
@@ -19,7 +20,7 @@ module.exports = {
           if (err) {
             console.log(err);
           }
-          res.send({
+          res.status(201).send({
             token,
             user: userData,
           });
@@ -35,6 +36,54 @@ module.exports = {
       });
     }
   },
+
+  signup: async (req, res) => {
+    try {
+
+      let userData = req.body;
+
+      if (userData.code) {
+
+        // Getting the invitor via his invitation code
+        const inviter = await repository.findOne({ code: userData.code }, User);
+
+        // Storing the inviterId in the new user
+        userData.inviter = inviter._id;
+        // Hashing the password
+        userData.password = await bcrypt.hash(userData.password, 10);
+
+        // Storing the user
+        const user = await repository.save(userData, User);
+
+        // Getting Inviter's Bonus Tree
+        const inviterBonusTree = await BonusTree.findOne({ user_id: userData.inviter })
+
+        // Checking if BonusTree exists for the inviter and Adding invitee
+        if (inviterBonusTree) {
+
+          await BonusTree.updateOne({ user_id: userData.inviter }, { $addToSet: { invitees: user._id } })
+
+        } else {
+
+          let inviterData = {
+            user_id: userData.inviter,
+            invitees: [user._id]
+          }
+          await BonusTree.create(inviterData)
+
+        }
+      } else {
+        // Storing the user
+        await repository.save(userData, User);
+      }
+      // Sending back the response
+      res.status(201).send({ message: "Created!" });
+    } catch (e) {
+      console.error(e);
+      res.status(500).send();
+    }
+  },
+
   updateUser: async (req, res) => {
     try {
       let filter = req.body.filter;
@@ -80,58 +129,6 @@ module.exports = {
       res.status(200).send(user);
     } catch (e) {
       res.status(500).send(e);
-    }
-  },
-
-  signup: async (req, res) => {
-    try {
-
-      let userData = req.body;
-
-      if (userData.code) {
-
-        // Getting the invitor via his invitation code
-        const inviter = await repository.findOne({ code: userData.code }, User);
-
-        // Storing the inviterId in the new user
-        userData.inviter = inviter._id;
-        // Hashing the password
-        userData.password = await bcrypt.hash(userData.password, 10);
-
-        // Storing the user
-        const user = await repository.save(userData, User);
-
-        // Getting Inviter's Bonus Tree
-        const inviterBonusTree = await BonusTree.findOne({ user_id: userData.inviter })
-
-        // Checking if BonusTree exists for the inviter and Adding invitee
-        if (inviterBonusTree) {
-
-          await BonusTree.updateOne({ user_id: userData.inviter }, { $addToSet: { invitees: user._id } })
-
-        } else {
-
-          let inviterData = {
-            user_id: userData.inviter,
-            invitees: [user._id]
-          }
-          await BonusTree.create(inviterData)
-
-        }
-
-
-      } else {
-
-        // Storing the user
-        await repository.save(userData, User);
-
-      }
-
-      // Sending back the response
-      res.status(201).send({ message: "Created!" });
-    } catch (e) {
-      console.error(e);
-      res.status(500).send();
     }
   },
 
