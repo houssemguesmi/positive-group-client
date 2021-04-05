@@ -14,7 +14,7 @@ module.exports = {
   unlockCourse: async (req, res) => {
     try {
     } catch (e) {
-      console.error(e);
+      res.status(400).error("Internal Error");
     }
   },
 };

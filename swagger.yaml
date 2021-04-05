@@ -13,8 +13,8 @@ servers:
         default: http
       port:
         enum:
-          - "8000"
-        default: "8000"
+          - "3000"
+        default: "3000"
       environment:
         default: api
         enum:
@@ -22,7 +22,7 @@ servers:
 # security:
 #   - BearerAuth: []
 paths:
-  /signup:
+  /users/signup:
     post:
       summary: Sign up for a new user
       requestBody:
@@ -47,7 +47,7 @@ paths:
           description: Error
         "200":
           description: Created
-  /login:
+  /users/login:
     post:
       summary: Login for users
       requestBody:
@@ -88,6 +88,19 @@ paths:
                     type: string
                     description: the data of the user
 
+  /courses:
+    get:
+      summary: Returns the full list of courses
+      responses:
+        "400":
+          description: Error
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Course"
+
 components:
   schemas:
     UserLoginForm:
@@ -107,6 +120,23 @@ components:
           type: string
         code:
           type: string
+
+    Course:
+      type: object
+      properties:
+        name:
+          type: string
+        category:
+          type: string
+        description:
+          type: string
+        duration:
+          type: number
+        createdOn:
+          type: string
+        chapters:
+          type: array
+
     User:
       type: object
       properties:

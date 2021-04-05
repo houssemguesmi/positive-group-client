@@ -7,7 +7,7 @@ const session = require("express-session");
 // Middlewares
 const morgan = require("morgan");
 const cors = require("cors");
-const { corsMiddleware, authenticateToken, errorHandler } = require("./src/middlewares")
+// const { corsMiddleware, authenticateToken, errorHandler } = require("./src/middlewares")
 
 // Importing Routes
 const coursesRoutes = require("./src/routes/course.routes");
@@ -21,9 +21,9 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cors());
-app.use(corsMiddleware());
-app.use(authenticateToken());
-app.use(errorHandler());
+// app.use(corsMiddleware());
+// app.use(authenticateToken());
+// app.use(errorHandler());
 
 // Using Routes
 app.use("/api/courses", coursesRoutes);
