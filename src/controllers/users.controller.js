@@ -116,7 +116,6 @@ module.exports = {
             invitees: [user._id]
           }
           await BonusTree.create(inviterData)
-          console.log("Created Bonus Tree for Inviter!")
 
         }
 
@@ -181,5 +180,39 @@ module.exports = {
     } catch (err) {
       console.error(err)
     }
-  }
+  },
+
+  // getBonusByLevel: async (req, res) => {
+  //   try {
+  //     // Get user id from params
+  //     let userId = req.params.id;
+  //     // Get level id from params
+  //     let bonusLevel = req.params.id;
+  //   } catch (err) {
+
+  //   }
+  // },
+
+  // getInviteesNumber: async (req, res) => {
+  //   try {
+  //     let invitees = 0;
+  //     // Get user id from params
+  //     const userId = req.params.id;
+  //     // Get level1 invitees from bonus tree
+  //     const level1Invitees = await BonusTree.find({ user_id: userId }, 'invitees');
+  //     const level1Number = level1Invitees.length;
+  //     if (level1Number) {
+  //       for (let i = 0; i < 5; i++)
+  //       level1Invitees.map((inviteeId) => {
+  //         const invitedByInvitee = await BonusTree.find({ user_id: inviteeId }, 'invitees');
+  //         level2Invitees.push()
+  //       })
+  //     } else {
+  //       res.send({ invitees: 0 })
+  //     }
+  //   } catch (err) {
+
+  //   }
+  // },
+
 };

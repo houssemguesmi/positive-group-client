@@ -4,8 +4,11 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const session = require("express-session");
 
+// Middlewares
 const morgan = require("morgan");
 const cors = require("cors");
+const { corsMiddleware, authenticateToken, errorHandler } = require("./src/middlewares")
+
 // Importing Routes
 const coursesRoutes = require("./src/routes/course.routes");
 const categoriesRoutes = require("./src/routes/categories.routes");
@@ -25,18 +28,6 @@ app.use("/api/categories", categoriesRoutes);
 app.use("/api/chapters", chapterRoutes);
 app.use("/api/users", userRoutes);
 
-// Using Cross Origin middelware
-// app.use((req, res, next) => {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-//   );
-//   if (req.method === "OPTIONS") {
-//     res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
-//     return res.status(200).json({});
-//   }
-//   next();
-// });
+
 
 module.exports = app;
