@@ -17,7 +17,8 @@ module.exports = {
       var chapters = await repository.find({ course: course.name }, Chapter);
       res.status(200).send(chapters);
     } catch (e) {
-      console.error(e);
+      res.status(400).error("Error")
+      // console.error(e);
     }
   },
   getOneChapter: async (req, res) => {

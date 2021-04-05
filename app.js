@@ -4,6 +4,9 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const session = require("express-session");
 
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerDefinition = require('./src/config/swagger.config');
+
 // Middlewares
 const morgan = require("morgan");
 const cors = require("cors");
@@ -34,10 +37,21 @@ app.use("/api/users", userRoutes);
 /**
  * API Documentation with Swagger.
  */
-const swaggerUi = require("swagger-ui-express"),
-    YAML = require("yamljs");
-swaggerDocument = YAML.load("./swagger.yaml");
+// const swaggerUi = require("swagger-ui-express"),
+//     YAML = require("yamljs");
+// swaggerDocument = YAML.load("./swagger.yaml");
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+
+const options = {
+    swaggerDefinition,
+    // Paths to files containing OpenAPI definitions
+    apis: ['./routes/*.js'],
+};
+
+const swaggerSpec = swaggerJSDoc(options);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 module.exports = app;
