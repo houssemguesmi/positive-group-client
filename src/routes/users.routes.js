@@ -12,7 +12,5 @@ router.put("/:token", usersController.getUserByToken);
 router.post("/updateUser", usersController.updateUser);
 router.post("/updatePassword", usersController.updatePassword);
 
-
 module.exports = router;
-
 
