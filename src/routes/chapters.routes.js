@@ -3,7 +3,8 @@ const chaptersController = require("../controllers/chapters.controller");
 const authenticateToken = require("../middlewares/authenticateToken");
 
 router.get("/", chaptersController.getAllChapters);
-router.get("/:id", chaptersController.getChapters);
+router.get("/:chapterId", chaptersController.getChapterById);
+router.get("/bycourse/:courseId", chaptersController.getChaptersByCourse);
 
 module.exports = router;
 
