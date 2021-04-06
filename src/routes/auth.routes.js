@@ -43,7 +43,7 @@ module.exports = router;
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/UserLoginResponse"
+ *               $ref: "#/components/responses/UserLoginResponse"
 */
 
 
@@ -59,14 +59,14 @@ module.exports = router;
  *       content:
  *         application/json:
  *           schema:
- *             $ref: "#/components/schemas/UserSignUpForm"
+ *             $ref: "#/components/requestBodies/UserSignUpForm"
  *
  *         application/x-www-form-urlencoded:
  *           schema:
  *             type: object
  *             properties:
  *               payload:
- *                 $ref: "#/components/schemas/UserSignUpForm"
+ *                 $ref: "#/components/requestBodies/UserSignUpForm"
  *           encoding:
  *             payload:
  *               contentType: application/json
@@ -91,14 +91,14 @@ module.exports = router;
  *        content:
  *          application/json:
  *            schema:
- *              $ref: "#/components/schemas/UpdatePasswordForm"
+ *              $ref: "#/components/requestBodies/UpdatePasswordForm"
  *
  *          application/x-www-form-urlencoded:
  *            schema:
  *              type: object
  *              properties:
  *                payload:
- *                  $ref: "#/components/schemas/UpdatePasswordForm"
+ *                  $ref: "#/components/requestBodies/UpdatePasswordForm"
  *            encoding:
  *              payload:
  *                contentType: application/json
@@ -140,7 +140,18 @@ module.exports = router;
 /**
  * @swagger
  *   components:
- *     schemas:
+ *
+ *     requestBodies:
+ *
+ *       UserSignUpForm:
+ *         type: object
+ *         properties:
+ *           email:
+ *             type: string
+ *           password:
+ *             type: string
+ *           code:
+ *             type: string
  *
  *       UserLoginForm:
  *         type: object
@@ -149,6 +160,18 @@ module.exports = router;
  *             type: string
  *           password:
  *             type: string
+ *
+ *       UpdatePasswordForm:
+ *         type: object
+ *         properties:
+ *           email:
+ *             type: string
+ *           oldPassword:
+ *             type: string
+ *           newPassword:
+ *             type: string
+ *
+ *     responses:
  *
  *       UserLoginResponse:
  *         type: object
@@ -161,25 +184,7 @@ module.exports = router;
  *               $ref: '#/components/schemas/User'
  *             description: the data of the authenticated user
  *
- *       UserSignUpForm:
- *         type: object
- *         properties:
- *           email:
- *             type: string
- *           password:
- *             type: string
- *           code:
- *             type: string
- *
- *       UpdatePasswordForm:
- *         type: object
- *         properties:
- *           email:
- *             type: string
- *           oldPassword:
- *             type: string
- *           newPassword:
- *             type: string
+ *     schemas:
  *
  *       User:
  *         type: object
