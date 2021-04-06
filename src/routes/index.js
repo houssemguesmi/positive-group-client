@@ -5,6 +5,7 @@ const categoriesRoutes = require('./categories.routes');
 const chaptersRoutes = require('./chapters.routes');
 const coursesRoutes = require('./course.routes');
 const usersRoutes = require('./users.routes');
+const authRoutes = require('./auth.routes');
 
 const router = express.Router();
 
@@ -25,6 +26,10 @@ const defaultRoutes = [
         path: '/categories',
         route: categoriesRoutes
     },
+    {
+        path: '/auth',
+        route: authRoutes
+    }
 ]
 
 const devRoutes = [
