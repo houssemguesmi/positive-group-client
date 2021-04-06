@@ -12,6 +12,8 @@ module.exports = router;
  * @swagger
  *  /courses:
  *   get:
+ *     tags:
+ *       - courses
  *     summary: Returns the full list of courses
  *     responses:
  *       "500":
@@ -28,9 +30,18 @@ module.exports = router;
 
 /**
  * @swagger
- *  /courses/{coursesId}:
+ *  /courses/{courseId}:
  *   get:
+ *     tags:
+ *       - courses
  *     summary: Returns the full list of courses
+ *     parameters:
+ *       - in: path
+ *         name: courseId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: id of the course
  *     responses:
  *       "500":
  *         description: Error

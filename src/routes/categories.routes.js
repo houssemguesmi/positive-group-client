@@ -12,6 +12,8 @@ module.exports = router;
  * @swagger
  *  /categories:
  *   get:
+ *     tags:
+ *       - categories
  *     summary: Returns the full list of categories
  *     responses:
  *       "400":
@@ -30,6 +32,8 @@ module.exports = router;
  * @swagger
  *  /categories/{categoryId}:
  *   get:
+ *     tags:
+ *       - categories
  *     summary: Returns the full list of categories
  *     responses:
  *       "400":

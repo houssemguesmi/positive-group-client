@@ -11,6 +11,8 @@ module.exports = router;
  * @swagger
  *  /login:
  *   post:
+ *     tags:
+ *       - authentication
  *     summary: User Authentication
  *     requestBody:
  *        required: true
@@ -49,6 +51,8 @@ module.exports = router;
  * @swagger
  *  /signup:
  *   post:
+ *     tags:
+ *       - authentication
  *     summary: Registration for new users
  *     requestBody:
  *       required: true
@@ -79,6 +83,8 @@ module.exports = router;
  * @swagger
  *  /update-password:
  *   post:
+ *     tags:
+ *       - authentication
  *     summary: Update existing password
  *     requestBody:
  *        required: true

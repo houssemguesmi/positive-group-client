@@ -12,6 +12,8 @@ module.exports = router;
  * @swagger
  *  /chapters:
  *   get:
+ *     tags:
+ *       - chapters
  *     summary: Returns the full list of chapters
  *     responses:
  *       "400":
@@ -30,6 +32,8 @@ module.exports = router;
  * @swagger
  *  /chapters/{chapterId}:
  *   get:
+ *     tags:
+ *       - chapters
  *     summary: Returns the chapter that has the chapterId
  *     parameters:
  *       - in: path
@@ -53,6 +57,8 @@ module.exports = router;
  * @swagger
  *  /chapters/course/{courseId}:
  *   get:
+ *     tags:
+ *       - chapters
  *     summary: Returns the chapters that belong to the course with courseId
  *     parameters:
  *       - in: path
