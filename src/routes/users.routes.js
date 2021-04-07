@@ -42,7 +42,6 @@ module.exports = router;
 */
 
 
-
 /**
  * @swagger
  *  /users/{token}:
@@ -125,6 +124,8 @@ module.exports = router;
  *           invitees:
  *             description: users invited by this user
  *             type: array
+ *             items:
+ *               type: string
  *           inviter:
  *             description: the user who invited user, null if none
  *             type: string

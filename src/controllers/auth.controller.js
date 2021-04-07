@@ -1,5 +1,7 @@
 const User = require("../models/User");
 const repository = require("../repositories/base.repository");
+const bcrypt = require("bcrypt");
+const BonusTree = require("../models/BonusTree")
 
 module.exports = {
 
@@ -33,23 +35,48 @@ module.exports = {
     signup: async (req, res) => {
         try {
 
+            let inviterCode = req.body.code
+
             let userData = req.body;
+
+            // Generating a code for the new user
+            let newUserCode = '';
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            const charactersLength = characters.length;
+            for (var i = 0; i < 10; i++) {
+                newUserCode += characters.charAt(Math.floor(Math.random() * charactersLength));
+            }
+
+            // Adding the generated code to the user
+            userData["code"] = newUserCode;
+
+            console.log(userData)
 
             if (userData.code) {
 
+                console.log("======= Inviter Code", inviterCode)
+
                 // Getting the invitor via his invitation code
-                const inviter = await repository.findOne({ code: userData.code }, User);
+                const inviter = await repository.findOne({ code: inviterCode }, User);
+
+                console.log("======= Inviter", inviter)
 
                 // Storing the inviterId in the new user
-                userData.inviter = inviter._id;
+                userData["inviter"] = inviter._id;
+
+                console.log(userData)
                 // Hashing the password
-                userData.password = await bcrypt.hash(userData.password, 10);
+                let hashedPassword = await bcrypt.hash(userData.password, 10);
+
+                userData["password"] = hashedPassword
 
                 // Storing the user
                 const user = await repository.save(userData, User);
 
                 // Getting Inviter's Bonus Tree
-                const inviterBonusTree = await BonusTree.findOne({ user_id: userData.inviter })
+                const inviterBonusTree = await repository.findOne({ user_id: userData.inviter }, BonusTree)
+
+                console.log("======= Inviter Bonus Tree", inviterBonusTree)
 
                 // Checking if BonusTree exists for the inviter and Adding invitee
                 if (inviterBonusTree) {
@@ -65,14 +92,16 @@ module.exports = {
                     await BonusTree.create(inviterData)
 
                 }
+
             } else {
                 // Storing the user
                 await repository.save(userData, User);
             }
             // Sending back the response
-            res.status(201).send({ message: "Created!" });
-        } catch (e) {
-            res.status(500).error(error);
+            res.status(201).send("Created!");
+        } catch (error) {
+            console.error(error)
+            res.status(500).send(error);
         }
     },
 

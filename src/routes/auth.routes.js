@@ -19,14 +19,14 @@ module.exports = router;
  *        content:
  *          application/json:
  *            schema:
- *              $ref: "#/components/schemas/UserLoginForm"
+ *              $ref: "#/components/requestBodies/UserLoginForm"
  *
  *          application/x-www-form-urlencoded:
  *            schema:
  *              type: object
  *              properties:
  *                payload:
- *                  $ref: "#/components/schemas/UserLoginForm"
+ *                  $ref: "#/components/requestBodies/UserLoginForm"
  *            encoding:
  *              payload:
  *                contentType: application/json
@@ -105,6 +105,13 @@ module.exports = router;
  *
  *     responses:
  *
+ *       "201":
+ *         description: The updated User
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/User"
+ *
  *       "401":
  *         description: Wrong Password
  *         content:
@@ -128,12 +135,6 @@ module.exports = router;
  *       "500":
  *         description: Error
  *
- *       "201":
- *         description: Updated User
- *         content:
- *           application/json:
- *             schema:
- *               $ref: "#/components/schemas/User"
 */
 
 
@@ -180,58 +181,42 @@ module.exports = router;
  *             type: string
  *             description: the bearer token
  *           user:
+ *             description: the data of the authenticated user
  *             type:
  *               $ref: '#/components/schemas/User'
- *             description: the data of the authenticated user
  *
  *     schemas:
- *
  *       User:
  *         type: object
  *         properties:
  *           _id:
- *             description: id of the user
  *             type: string
  *           firstName:
- *             description: first name of the user
  *             type: string
  *           lastName:
- *             description: last name of the user
  *             type: string
  *           birthDate:
- *             description: birthdate of the user
  *             type: string
  *           gender:
- *             description: gender of the user
  *             type: string
  *           job:
- *             description: job of the user
  *             type: string
  *           email:
- *             description: email of the user
  *             type: string
  *           password:
- *             description: password of the user
  *             type: string
  *           isActivated:
- *             description: is the account activated
  *             type: boolean
  *           invitees:
- *             description: users invited by this user
  *             type: array
  *           inviter:
- *             description: the user who invited user, null if none
  *             type: string
  *           bonus:
- *             description: bonus cumulated by the user
  *             type: string
  *           image:
- *             description: image of the user
  *             type: string
  *           phone:
- *             description: phone number of the user
  *             type: string
  *           location:
- *             description: location by governorate of the user
  *             type: string
 */

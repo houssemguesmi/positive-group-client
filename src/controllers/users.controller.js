@@ -10,9 +10,7 @@ module.exports = {
 
   updateUser: async (req, res) => {
     try {
-      let filter = req.body.filter;
-      let payload = req.body.payload;
-      let newUser = await repository.findOneAndUpdate(filter, payload, User);
+      let newUser = await repository.findOneAndUpdate({ _id: req.params.userId }, req.body.payload, User);
       res.status(200).send(newUser);
     } catch (e) {
       res.status(500).send(e);
@@ -22,12 +20,7 @@ module.exports = {
   getUserByToken: async (req, res) => {
     try {
       let userEmail = jwtDecode(req.params.token).email;
-      let user = await repository.findOne(
-        {
-          email: userEmail,
-        },
-        User
-      );
+      let user = await repository.findOne({ email: userEmail }, User);
       res.status(200).send(user);
     } catch (e) {
       res.status(500).send(e);
@@ -39,18 +32,18 @@ module.exports = {
       // getting the user requesting the code
       let user = await repository.findOneById(req.params.id, User)
       // Generating the random 10 characters code
-      let result = '';
+      let code = '';
       const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
       const charactersLength = characters.length;
       for (var i = 0; i < 10; i++) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        code += characters.charAt(Math.floor(Math.random() * charactersLength));
       }
       // Adding the generated code to the user
-      user["code"] = result;
+      user["code"] = code;
       // Saving the new user to the Database
       await repository.save(user, User);
       // Returning the response
-      res.status(200).send({ code: result })
+      res.status(200).send({ code: code })
     } catch (error) {
       console.error(error);
       res.status(500).send();
