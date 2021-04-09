@@ -1,6 +1,8 @@
 require("dotenv").config();
 const User = require("../models/User");
-const BonusTree = require("../models/BonusTree")
+const BonusTree = require("../models/BonusTree");
+const ActivationCode = require("../models/ActivationCode");
+
 const repository = require("../repositories/base.repository");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -126,39 +128,24 @@ module.exports = {
       console.error(error);
       res.status(500).send(error)
     }
+  },
+
+  activateAccount: async (req, res) => {
+    try {
+      let userId = req.params.userId;
+      let activationCodeStatus = await ActivationCode.findOne({ code: req.body.code }, 'isUsed');
+      if (!activationCodeStatus) {
+        await ActivationCode.findOneAndUpdate({ code: req.body.code }, { isUsed: true, usedBy: userId });
+      } else {
+        res.status(405).send("Code is already used!")
+      }
+      let user = await User.findByIdAndUpdate({ _id: userId }, { isActivated: true })
+      console.log(user)
+      res.status(200).send(user)
+    } catch (error) {
+      console.error(error);
+      res.status(500).send(error)
+    }
   }
-
-  // getBonusByLevel: async (req, res) => {
-  //   try {
-  //     // Get user id from params
-  //     let userId = req.params.id;
-  //     // Get level id from params
-  //     let bonusLevel = req.params.id;
-  //   } catch (err) {
-
-  //   }
-  // },
-
-  // getInviteesNumber: async (req, res) => {
-  //   try {
-  //     let invitees = 0;
-  //     // Get user id from params
-  //     const userId = req.params.id;
-  //     // Get level1 invitees from bonus tree
-  //     const level1Invitees = await BonusTree.find({ user_id: userId }, 'invitees');
-  //     const level1Number = level1Invitees.length;
-  //     if (level1Number) {
-  //       for (let i = 0; i < 5; i++)
-  //       level1Invitees.map((inviteeId) => {
-  //         const invitedByInvitee = await BonusTree.find({ user_id: inviteeId }, 'invitees');
-  //         level2Invitees.push()
-  //       })
-  //     } else {
-  //       res.send({ invitees: 0 })
-  //     }
-  //   } catch (err) {
-
-  //   }
-  // },
 
 };

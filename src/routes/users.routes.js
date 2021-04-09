@@ -1,12 +1,12 @@
 const router = require("express").Router();
 const usersController = require("../controllers/users.controller");
-const { route } = require("./auth.routes");
 
 router.get("/generate-code/:id", usersController.generateCode)
 router.get("/bonus-tree/:id", usersController.getBonusTree)
 // router.post("/bonus/:id", usersController.generateCode)
 
 router.get("/bonus/:userId", usersController.getInvitees)
+router.post("/activate-account/:userId", usersController.activateAccount)
 
 router.get("/:token", usersController.getUserByToken);
 router.put("/:userId", usersController.updateUser);
