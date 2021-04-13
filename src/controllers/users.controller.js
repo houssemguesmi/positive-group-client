@@ -75,15 +75,24 @@ module.exports = {
       let level1BonusTree = await BonusTree.find({ user_id: userId }).select({ "invitees": 1, "_id": 0 });
       let level1Invitees = level1BonusTree[0].invitees;
 
-      var response = {
-        level1Invitees: level1Invitees,
-        freeInvitees: 0,
-        premiumInvitees: 0
-      }
+      let response = {}
 
-      for (let i = 2; i <= 10; i++) {
+      for (let i = 1; i <= 10; i++) {
         response[`level${i}Invitees`] = []
       }
+
+      Promise.all(level1Invitees.map(async (invitee) => {
+        let currentInvitee = await User.findById(invitee);
+        let isInviteeActivated = currentInvitee.isActivated;
+        console.log(invitee)
+        let responseInvitee = {
+          inviteeId: invitee,
+          isActivated: isInviteeActivated
+        }
+        response.level1Invitees.push(responseInvitee)
+        console.log(response)
+      }))
+
 
       if (response.level1Invitees) {
 
@@ -91,21 +100,23 @@ module.exports = {
 
           try {
             await Promise.all(
-              response[`level${i}Invitees`].map(async (inviteeId) => {
-                let invitee = await User.findById(inviteeId);
-                console.log(invitee)
-                // SHOULD ADD IsACTIVATED TO THE SCHEMA OF THE BONUS TREE
-                if (invitee.isActivated) {
-                  response.premiumInvitees++;
-                } else {
-                  response.freeInvitees++;
-                }
-                let invitedUsers = await BonusTree.findOne({ user_id: inviteeId }).select({ "invitees": 1, "_id": 0 })
+              response[`level${i}Invitees`].map(async (invitee) => {
+                console.log("yo")
+                let invitedUsers = await BonusTree.findOne({ user_id: invitee.inviteeId }).select({ "invitees": 1, "_id": 0 })
                 if (invitedUsers) {
-                  response[`level${i + 1}Invitees`] = response[`level${i + 1}Invitees`].concat(invitedUsers.invitees)
-                  response.premiumInvitees += response[`level${i + 1}Invitees`].length;
+                  await Promise.all(invitedUsers.map(async (inviteeId) => {
+                    let currentInvitee = await User.findById(inviteeId);
+                    console.log("============ invitee: ", currentInvitee)
+                    let responseInvitee = {
+                      inviteeId: inviteeId,
+                      isActivated: currentInvitee.isActivated
+                    }
+                    response[`level${i + 1}Invitees`].push(responseInvitee)
+                    // response[`level${i + 1}Invitees`] = response[`level${i + 1}Invitees`].concat(invitedUsers.invitees)
+                  }))
                 }
-              }))
+              })
+            )
           } catch (err) {
             console.error(err)
           }
