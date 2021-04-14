@@ -1,6 +1,5 @@
 require("dotenv").config();
 const User = require("../models/User");
-const BonusTree = require("../models/BonusTree");
 const ActivationCode = require("../models/ActivationCode");
 
 const repository = require("../repositories/base.repository");

@@ -1,7 +1,6 @@
 const User = require("../models/User");
 const repository = require("../repositories/base.repository");
 const bcrypt = require("bcrypt");
-const BonusTree = require("../models/BonusTree");
 
 const { generateCode } = require("../helpers");
 
