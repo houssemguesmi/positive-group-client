@@ -62,7 +62,7 @@ module.exports = {
             // Storing the user
             const user = await repository.save(userData, User);
 
-            inviterCode && await User.findByIdAndUpdate({ _id: inviter._id }, { $push: { invitees: user._id } })
+            inviterCode && await User.findByIdAndUpdate({ _id: userData.inviter }, { $push: { invitees: user._id } })
 
             // Sending back the response
             res.status(201).send("Created!");

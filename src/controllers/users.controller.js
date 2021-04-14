@@ -74,8 +74,26 @@ module.exports = {
 
     // Get level 1 invitees
     let user = await User.findById(userId);
-    let invitees = user.invitees, isActivated = user.isActivated;
-    console.log(invitees, user, isActivated)
+    let level1Invitees = user.invitees, isUserActivated = user.isActivated;
+
+    let response = {}
+
+    for (let i = 1; i <= 10; i++) {
+      response[`level${i}Invitees`] = []
+    }
+
+    await Promise.all(level1Invitees.map(async (invitee) => {
+      let currentInvitee = await User.findById(invitee);
+      let responseInvitee = {
+        inviteeId: invitee,
+        isActivated: currentInvitee.isActivated
+      }
+      response.level1Invitees.push(responseInvitee)
+    }))
+
+    res.send(response)
+
+
   },
 
   getInviteesDEPRECATED: async (req, res) => {
@@ -95,15 +113,12 @@ module.exports = {
 
       Promise.all(level1Invitees.map(async (invitee) => {
         let currentInvitee = await User.findById(invitee);
-        console.log(currentInvitee)
         let isInviteeActivated = currentInvitee.isActivated;
-        console.log(invitee)
         let responseInvitee = {
           inviteeId: invitee,
           isActivated: isInviteeActivated
         }
         response.level1Invitees.push(responseInvitee)
-        console.log(response)
       }))
 
 
