@@ -76,6 +76,8 @@ module.exports = {
     let user = await User.findById(userId);
     let level1Invitees = user.invitees, isUserActivated = user.isActivated;
 
+    console.log("==== Level 1 Invitees: ", level1Invitees)
+
     let response = {}
 
     for (let i = 1; i <= 10; i++) {
@@ -84,12 +86,46 @@ module.exports = {
 
     await Promise.all(level1Invitees.map(async (invitee) => {
       let currentInvitee = await User.findById(invitee);
-      let responseInvitee = {
-        inviteeId: invitee,
-        isActivated: currentInvitee.isActivated
+      if (currentInvitee != null) {
+        let responseInvitee = {
+          inviteeId: invitee,
+          isActivated: currentInvitee.isActivated
+        }
+        response.level1Invitees.push(responseInvitee)
+      } else {
+        User.findByIdAndUpdate(invitee, { $pullAll: { invitees: [invitee] } })
       }
-      response.level1Invitees.push(responseInvitee)
+
     }))
+
+    for (let i = 1; i < 10; i++) {
+
+      try {
+        await Promise.all(
+          response[`level${i}Invitees`].map(async (invitee) => {
+            let invitedUsers = await User.findById(invitee.inviteeId).select({ "invitees": 1, "_id": 0 }).invitees
+
+            if (invitedUsers) {
+              await Promise.all(invitedUsers.map(async (inviteeId) => {
+                let currentInvitee = await User.findById(inviteeId);
+                if (currentInvitee != null) {
+                  let responseInvitee = {
+                    inviteeId: inviteeId,
+                    isActivated: currentInvitee.isActivated
+                  }
+                  response[`level${i + 1}Invitees`].push(responseInvitee)
+                  // response[`level${i + 1}Invitees`] = response[`level${i + 1}Invitees`].concat(invitedUsers.invitees)
+                } else {
+                  User.findByIdAndUpdate(invitee, { $pullAll: { invitees: [inviteeId] } })
+                }
+              }))
+            }
+          })
+        )
+      } catch (err) {
+        console.error(err)
+      }
+    }
 
     res.send(response)
 

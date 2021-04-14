@@ -58,6 +58,7 @@ module.exports = {
             // Storing the inviterId in the new user
             userData["password"] = hashedPassword
             userData["isActivated"] = false;
+            userData["invitees"] = []
 
             // Storing the user
             const user = await repository.save(userData, User);
