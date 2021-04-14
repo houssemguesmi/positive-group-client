@@ -103,11 +103,12 @@ module.exports = {
       try {
         await Promise.all(
           response[`level${i}Invitees`].map(async (invitee) => {
-            let invitedUsers = await User.findById(invitee.inviteeId).select({ "invitees": 1, "_id": 0 }).invitees
-
-            if (invitedUsers) {
-              await Promise.all(invitedUsers.map(async (inviteeId) => {
+            let invitedUsers = await User.findById(invitee.inviteeId).select({ "invitees": 1, "_id": 0 })
+            console.log("INVITED USERS: ", invitedUsers.invitees)
+            if (invitedUsers.invitees) {
+              await Promise.all(invitedUsers.invitees.map(async (inviteeId) => {
                 let currentInvitee = await User.findById(inviteeId);
+                console.log("INVITED INVITEE: ", currentInvitee)
                 if (currentInvitee != null) {
                   let responseInvitee = {
                     inviteeId: inviteeId,
@@ -128,7 +129,6 @@ module.exports = {
     }
 
     res.send(response)
-
 
   },
 
