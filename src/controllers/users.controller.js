@@ -76,8 +76,6 @@ module.exports = {
     let user = await User.findById(userId);
     let level1Invitees = user.invitees, isUserActivated = user.isActivated;
 
-    console.log("==== Level 1 Invitees: ", level1Invitees)
-
     let response = {}
 
     for (let i = 1; i <= 10; i++) {
@@ -104,11 +102,9 @@ module.exports = {
         await Promise.all(
           response[`level${i}Invitees`].map(async (invitee) => {
             let invitedUsers = await User.findById(invitee.inviteeId).select({ "invitees": 1, "_id": 0 })
-            console.log("INVITED USERS: ", invitedUsers.invitees)
             if (invitedUsers.invitees) {
               await Promise.all(invitedUsers.invitees.map(async (inviteeId) => {
                 let currentInvitee = await User.findById(inviteeId);
-                console.log("INVITED INVITEE: ", currentInvitee)
                 if (currentInvitee != null) {
                   let responseInvitee = {
                     inviteeId: inviteeId,
