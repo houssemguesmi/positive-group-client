@@ -7,13 +7,13 @@ const userSchema = new Schema({
   birthDate: Date,
   gender: String,
   job: String,
-  email: { type: String, unique: true },
-  password: String,
-  isActivated: Boolean,
-  invitees: Array,
-  inviter: String,
-  code: String,
-  bonus: Number, // To be changed with calculation
+  email: { type: String, unique: true, required: true },
+  password: { type: String, unique: true },
+  isActivated: { type: Boolean, default: false },
+  invitees: { type: Array, default: [] },
+  inviter: { type: String, default: null },
+  code: { type: String, required: true },
+  courses: { type: Array, default: [] }
 });
 
 const User = mongoose.model("User", userSchema);

@@ -9,10 +9,7 @@ module.exports = {
 
     login: async (req, res) => {
         try {
-            const userData = await repository.findOne(
-                { email: req.body.email },
-                User
-            );
+            const userData = await repository.findOne({ email: req.body.email }, User);
             const user = { email: userData.email };
             if (await bcrypt.compare(req.body.password, userData.password)) {
                 jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, (err, token) => {
@@ -35,6 +32,7 @@ module.exports = {
     },
 
     signup: async (req, res) => {
+
         try {
             let inviterCode = req.body.code;
             let userData = req.body;

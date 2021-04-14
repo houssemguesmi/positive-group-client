@@ -3,8 +3,7 @@ const Schema = mongoose.Schema;
 
 const activationCodeSchema = new Schema({
     code: String,
-    isUsed: Boolean,
-    usedBy: String
+    usedBy: { type: String, default: null }
 });
 
 const ActivationCode = mongoose.model("ActivationCode", activationCodeSchema);
