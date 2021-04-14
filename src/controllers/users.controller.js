@@ -8,6 +8,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const jwtDecode = require("jwt-decode");
 
+const catchAsync = require("../utils/catchAsync")
+
 module.exports = {
 
   updateUser: async (req, res) => {
@@ -67,6 +69,16 @@ module.exports = {
   },
 
   getInvitees: async (req, res) => {
+    // Get user id from params
+    let userId = req.params.userId;
+
+    // Get level 1 invitees
+    let user = await User.findById(userId);
+    let invitees = user.invitees, isActivated = user.isActivated;
+    console.log(invitees, user, isActivated)
+  },
+
+  getInviteesDEPRECATED: async (req, res) => {
     try {
       // Get user id from params
       let userId = req.params.userId;
@@ -83,6 +95,7 @@ module.exports = {
 
       Promise.all(level1Invitees.map(async (invitee) => {
         let currentInvitee = await User.findById(invitee);
+        console.log(currentInvitee)
         let isInviteeActivated = currentInvitee.isActivated;
         console.log(invitee)
         let responseInvitee = {
