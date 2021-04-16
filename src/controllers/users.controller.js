@@ -133,6 +133,19 @@ module.exports = {
     }
   },
 
+  requestCourse: async (req, res) => {
+    try {
+      let userId = req.params.userId;
+      let courseId = req.params.courseId;
+      await User.findByIdAndUpdate(userId, { $push: { requests: courseId } })
+      res.status(200).send("Request Created")
+    } catch (error) {
+      res.status(500).error(error)
+    }
+  }
+
+
+
   // getBonus: async (req, res) => {
 
   // }

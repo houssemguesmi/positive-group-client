@@ -10,6 +10,8 @@ router.post("/activate-account/:userId", usersController.activateAccount)
 router.get("/:token", usersController.getUserByToken);
 router.put("/:userId", usersController.updateUser);
 
+router.post("/:userId/request/:courseId", usersController.requestCourse)
+
 router.post("/:userId/:courseId", usersController.unlockCourse)
 
 module.exports = router;
