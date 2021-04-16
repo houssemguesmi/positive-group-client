@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  firstName: { type: String, unique: trim },
-  lastName: { type: String, unique: trim },
-  birthDate: Date,
+  firstName: { type: String, trim: true },
+  lastName: { type: String, trim: true },
+  birthDate: { type: Date },
   gender: { type: String, enum: ['male', 'female', null], default: null },
-  job: { type: String, unique: trim },
+  job: { type: String, trim: true },
   email: {
     type: String,
     unique: true,

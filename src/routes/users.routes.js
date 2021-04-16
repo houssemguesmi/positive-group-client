@@ -10,6 +10,8 @@ router.post("/activate-account/:userId", usersController.activateAccount)
 router.get("/:token", usersController.getUserByToken);
 router.put("/:userId", usersController.updateUser);
 
+router.post("/:userId/:courseId", usersController.unlockCourse)
+
 module.exports = router;
 
 /**
@@ -35,6 +37,39 @@ module.exports = router;
  *           application/json:
  *             schema:
  *               $ref: "#/components/schemas/BonusTree"
+*/
+
+/**
+ * @swagger
+ *  /users/{userId}/{courseId}:
+ *   put:
+ *     tags:
+ *       - users
+ *     summary: Gets the full bonus tree of the user
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: id of the user
+ *      - in: path
+ *         name: courseId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: id of the course to unlock
+ *     responses:
+ *       "500":
+ *         description: Error
+ *       "405":
+ *         description: Code Already in use
+ *       "403":
+ *         description: Code is not registered
+ *       "402":
+ *         description: Code doesn't belong to that course
+ *       "200":
+ *         description: Success
 */
 
 /**
