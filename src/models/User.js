@@ -15,12 +15,12 @@ const userSchema = new Schema({
     lowercase: true,
     validate(value) {
       if (!validator.isEmail(value)) {
-        throw new Error('Invalid email');
+        throw new Error('Email invalide');
       }
     },
   },
   password: { type: String, unique: true },
-  isActivated: { type: Boolean, default: false },
+  accountType: { type: String, enum: ['free', 'requested', 'premium'], default: 'free' },
   invitees: { type: Array, default: [] },
   inviter: { type: String, default: null },
   code: { type: String, required: true },
