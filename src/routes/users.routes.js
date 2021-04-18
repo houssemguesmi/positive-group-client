@@ -1,16 +1,17 @@
 const router = require("express").Router();
 const usersController = require("../controllers/users.controller");
+const requestsController = require("../controllers/requests.controller");
 
-router.get("/generate-code/:id", usersController.generateCode)
 // router.post("/bonus/:id", usersController.generateCode)
 
 router.get("/bonus/:userId", usersController.getInvitees)
 router.post("/activate-account/:userId", usersController.activateAccount)
 
+router.post("/activation/:userId", requestsController.requestActivation)
+
 router.get("/:token", usersController.getUserByToken);
 router.put("/:userId", usersController.updateUser);
 
-router.post("/:userId/:courseId", usersController.unlockCourse)
 
 module.exports = router;
 
@@ -53,7 +54,7 @@ module.exports = router;
  *           type: string
  *         required: true
  *         description: id of the user
- *      - in: path
+ *       - in: path
  *         name: courseId
  *         schema:
  *           type: string

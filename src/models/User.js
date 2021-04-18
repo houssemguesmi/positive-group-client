@@ -20,12 +20,12 @@ const userSchema = new Schema({
     },
   },
   password: { type: String, unique: true },
-  accountType: { type: String, enum: ['free', 'requested', 'premium'], default: 'free' },
+  accountType: { type: String, enum: ['free', 'pending', 'premium'], default: 'free' },
   invitees: { type: Array, default: [] },
   inviter: { type: String, default: null },
   code: { type: String, required: true },
   courses: { type: Array, default: [] },
-  requests: { type: Array, default: [] }
+  courseRequests: { type: Array, default: [] }
 });
 
 const User = mongoose.model("User", userSchema);

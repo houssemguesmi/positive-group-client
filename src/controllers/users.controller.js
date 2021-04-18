@@ -106,40 +106,6 @@ module.exports = {
       console.error(error);
       res.status(500).send(error)
     }
-  },
-
-  unlockCourse: async (req, res) => {
-    try {
-      let userId = req.params.userId;
-      let courseId = req.params.courseId;
-      let code = await ActivationCode.find({ code: req.body.activationCode });
-      let courseCodes = Course.find({ codes: { "$in": [req.body.activationCode] } })
-
-      if (code) {
-        res.status(403).send("Code does not exist")
-      } else if (code.usedBy === null) {
-        res.status(405).send("Code already used")
-      } else if (!courseCodes) {
-        res.status(402).send("Code doesn't belong to that course")
-      }
-
-      await ActivationCode.findByIdAndUpdate(code._id, { usedBy: userId })
-      await User.findByIdAndUpdate(userId, { courses: { "$push": [courseId] } })
-
-      res.status(200).send("Activated")
-
-    } catch (error) {
-      res.status(500).error(error)
-    }
   }
-
-  // getBonus: async (req, res) => {
-
-  // }
-
-  // requestFunds: async (req, res) => {
-  //   let userId = req.params.userId;
-
-  // }
 
 };

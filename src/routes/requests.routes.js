@@ -1,5 +1,8 @@
 const router = require("express").Router();
 const requestsController = require("../controllers/requests.controller")
 
-router.get("/", requestsController.getAllRequests)
-router.post("/:userId/:courseId", requestsController.requestCourse)
+router.post("/activation/:userId", requestsController.requestActivation)
+
+router.post("/course/:userId", requestsController.requestCourse)
+
+module.exports = router;
