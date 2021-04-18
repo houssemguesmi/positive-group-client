@@ -4,6 +4,7 @@ const dbconfig = require("../config/db.config");
 mongoose.connect(dbconfig.mongoUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useFindAndModify: false
 });
 mongoose.Promise = global.Promise;
 
