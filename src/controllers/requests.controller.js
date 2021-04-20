@@ -51,4 +51,15 @@ module.exports = {
             res.status(500).send(error)
         }
     },
+
+    getUserCoursesRequests: async (req, res) => {
+        try {
+            let userId = req.params.userId
+            let coursesRequests = await User.findById(userId, { 'courseRequests': 1, '_id': 0 })
+            res.status(200).send(coursesRequests)
+        } catch (error) {
+            console.log(error)
+            res.status(500).send(error)
+        }
+    }
 }
