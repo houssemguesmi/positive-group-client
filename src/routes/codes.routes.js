@@ -218,3 +218,49 @@ module.exports = router;
  *         description: Success
  *
 */
+
+/**
+ * @swagger
+ *  components:
+ *
+ *    schemas:
+ *      CreditCode:
+ *        type: object
+ *        properties:
+ *          _id:
+ *            type: string
+ *          code:
+ *            type: string
+ *          value:
+ *            type: number
+ *          createdOn:
+ *            type: date
+ *          usedOn:
+ *            type: date
+ *
+ *      ActivationCode:
+ *        type: object
+ *        properties:
+ *          _id:
+ *            type: string
+ *          code:
+ *            type: string
+ *          createdOn:
+ *            type: date
+ *          usedOn:
+ *            type: date
+ *
+ *      CourseCode:
+ *        type: object
+ *        properties:
+ *          _id:
+ *            type: string
+ *          code:
+ *            type: string
+ *          createdOn:
+ *            type: date
+ *          usedOn:
+ *            type: date
+ *
+ *
+*/
