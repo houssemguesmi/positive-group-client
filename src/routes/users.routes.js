@@ -239,12 +239,12 @@ module.exports = router;
  *            description: is the account activated
  *            type: boolean
  *          invitees:
- *            description: users invited by this user
+ *            description: users invited by this user (level1)
  *            type: array
  *            items:
  *              type: string
  *          inviter:
- *            description: the user who invited user, null if none
+ *            description: the user who invited this user, null if none
  *            type: string
  *          bonus:
  *            description: bonus cumulated by the user
@@ -255,7 +255,16 @@ module.exports = router;
  *          phone:
  *            description: phone number of the user
  *            type: string
+ *          accountType:
+ *            description: one value of Enum (free (default), pending, premium)
+ *            type: string
  *          location:
  *            description: location by governorate of the user
  *            type: string
+ *          courseRequests:
+ *            description: The requested courses by the user
+ *            type: array
+ *            items:
+ *              type: string
+ *              description: courseId
 */
