@@ -33,11 +33,12 @@ module.exports = router;
 
 /**
  * @swagger
- *  /courses/unlock/:courseId:
+ *  /courses/unlock/{courseId}:
  *   post:
  *     tags:
  *       - courses
- *     summary: Returns the full list of courses
+ *     summary: Unlocks a course by course code
+ *
  *     parameters:
  *       - in: path
  *         name: courseId
@@ -52,31 +53,13 @@ module.exports = router;
  *          application/json:
  *            schema:
  *              type: object
- *                parameters:
- *                  userId:
- *                    type: string
- *                    description: the id of the user
- *                  code:
- *                    type: string
- *                    description: the activation code of the course
- *
- *          application/x-www-form-urlencoded:
- *            schema:
- *              type: object
  *              properties:
- *                payload:
- *                  type: object
- *                    parameters:
- *                      userId:
- *                        type: string
- *                        description: the id of the user
- *                      code:
- *                        type: string
- *                        description: the activation code of the course
- *            encoding:
- *              payload:
- *                contentType: application/json
- *
+ *                userId:
+ *                  type: string
+ *                  description: the id of the user
+ *                code:
+ *                  type: string
+ *                  description: the activation code of the course
  *
  *     responses:
  *       "500":
