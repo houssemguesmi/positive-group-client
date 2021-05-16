@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const repository = require("../repositories/base.repository");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken")
 
 const { generateCode } = require("../helpers");
 
@@ -26,7 +27,8 @@ module.exports = {
                 });
             }
         } catch (error) {
-            res.status(500).error(error);
+            console.error(error)
+            res.status(400).send(error);
         }
     },
 
@@ -89,7 +91,7 @@ module.exports = {
                 res.status(200).send(updatedUser);
             }
         } catch (e) {
-            res.status(500).error(error);
+            res.status(500).send(error);
         }
     },
 

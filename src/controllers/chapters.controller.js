@@ -10,6 +10,7 @@ module.exports = {
       res.status(200).send(chapters);
     } catch (e) {
       console.error(e);
+      res.status(400).send("Error")
     }
   },
 
@@ -19,7 +20,7 @@ module.exports = {
       const chapters = await repository.find({ course: course.name }, Chapter);
       res.status(200).send(chapters);
     } catch (e) {
-      res.status(400).error("Error")
+      res.status(400).send("Error")
     }
   },
 
@@ -28,7 +29,7 @@ module.exports = {
       const chapter = await repository.findOneById(req.params.chapterId, Chapter);
       res.status(200).send(chapter);
     } catch (e) {
-      res.status(400).error("Error")
+      res.status(400).send("Error")
     }
   },
 
