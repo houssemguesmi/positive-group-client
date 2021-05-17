@@ -75,7 +75,7 @@ module.exports = {
 
     updatePassword: async (req, res) => {
         try {
-            let payload = req.body.payload
+            let payload = req.body
             let user = await repository.findOne({ email: payload.email }, User);
             if (!bcrypt.compareSync(payload.oldPassword, user.password)) {
                 res.status(401).send({ message: "Wrong old password!" });
@@ -88,7 +88,7 @@ module.exports = {
                     { password: payload.newPassword },
                     User
                 );
-                res.status(200).send(updatedUser);
+                res.status(200).send({ message: "Success" });
             }
         } catch (e) {
             res.status(500).send(error);
