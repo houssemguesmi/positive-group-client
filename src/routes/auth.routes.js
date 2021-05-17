@@ -110,7 +110,11 @@ module.exports = router;
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/User"
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Success
  *
  *       "401":
  *         description: Wrong Password
@@ -121,6 +125,7 @@ module.exports = router;
  *               properties:
  *                 message:
  *                   type: string
+ *                   example: Wrong old password!
  *
  *       "405":
  *         description: Identical old and new passwords
@@ -131,6 +136,7 @@ module.exports = router;
  *               properties:
  *                 message:
  *                   type: string
+ *                   example: Same old and new password!
  *
  *       "500":
  *         description: Error
