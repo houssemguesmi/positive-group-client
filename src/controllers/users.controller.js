@@ -106,6 +106,22 @@ module.exports = {
       console.error(error);
       res.status(500).send(error)
     }
+  },
+
+  updateUser: async (req, res) => {
+    try {
+      const newUserData = req.body;
+      // If the user uploaded a new image, call cloudinary API to save the new image
+      newUserData.image = req.file ?
+        await filesRepository.saveFileToCloudinary("category", req.file.path, req.body.name)
+        // Otherwise, we keep the same old image 
+        : newUserData.image;
+      const updatedUser = await repository.updateOne(User, req.params.userId, newUserData)
+      res.status(200).send(updatedUser)
+    } catch (error) {
+      console.error(error)
+      res.status(400).send(error)
+    }
   }
 
 };
