@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const validator = require("validator");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -25,7 +26,8 @@ const userSchema = new Schema({
   inviter: { type: String, default: null },
   code: { type: String, required: true },
   courses: { type: Array, default: [] },
-  courseRequests: { type: Array, default: [] }
+  courseRequests: { type: Array, default: [] },
+  image: { type: String, default: null }
 });
 
 const User = mongoose.model("User", userSchema);
