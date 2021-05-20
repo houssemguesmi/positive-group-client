@@ -2,6 +2,8 @@ const router = require("express").Router();
 const usersController = require("../controllers/users.controller");
 const requestsController = require("../controllers/requests.controller");
 
+const upload = require("../middlewares/multer")
+
 // router.post("/bonus/:id", usersController.generateCode)
 
 router.get("/bonus/:userId", usersController.getInvitees)
@@ -11,6 +13,8 @@ router.post("/activation/:userId", requestsController.requestActivation)
 
 router.get("/:token", usersController.getUserByToken);
 router.put("/:userId", usersController.updateUser);
+
+router.put("/:userId", upload.single("userImage"), usersController.updateUser)
 
 
 module.exports = router;
