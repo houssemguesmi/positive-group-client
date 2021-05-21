@@ -7,7 +7,7 @@ const upload = require("../middlewares/multer")
 // router.post("/bonus/:id", usersController.generateCode)
 
 router.get("/bonus/:userId", usersController.getInvitees)
-router.post("/activate-account/:userId", usersController.activateAccount)
+router.put("/activate-account/:userId", usersController.activateAccount)
 
 router.post("/activation/:userId", requestsController.requestActivation)
 
@@ -18,6 +18,49 @@ router.put("/:userId", upload.single("userImage"), usersController.updateUser)
 
 
 module.exports = router;
+
+/**
+ * @swagger
+ *  /users/activate-account/{userId}:
+ *   put:
+ *     tags:
+ *       - users
+ *     summary: Activates the user's account with activation code
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: id of the user
+ *     responses:
+ *       "400":
+ *         description: Error
+ *       "200":
+ *         description: Success
+*/
+
+/**
+ * @swagger
+ *  /users/activation/{userId}:
+ *   post:
+ *     tags:
+ *       - users
+ *     summary: Sends an account activation request to the Admin
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: id of the user
+ *     responses:
+ *       "400":
+ *         description: Error
+ *       "200":
+ *         description: Success
+*/
+
 
 /**
  * @swagger
@@ -34,7 +77,7 @@ module.exports = router;
  *         required: true
  *         description: id of the user
  *     responses:
- *       "500":
+ *       "400":
  *         description: Error
  *       "200":
  *         description: Success
@@ -44,38 +87,6 @@ module.exports = router;
  *               $ref: "#/components/schemas/BonusTree"
 */
 
-/**
- * @swagger
- *  /users/{userId}/{courseId}:
- *   put:
- *     tags:
- *       - users
- *     summary: Gets the full bonus tree of the user
- *     parameters:
- *       - in: path
- *         name: userId
- *         schema:
- *           type: string
- *         required: true
- *         description: id of the user
- *       - in: path
- *         name: courseId
- *         schema:
- *           type: string
- *         required: true
- *         description: id of the course to unlock
- *     responses:
- *       "500":
- *         description: Error
- *       "405":
- *         description: Code Already in use
- *       "403":
- *         description: Code is not registered
- *       "402":
- *         description: Code doesn't belong to that course
- *       "200":
- *         description: Success
-*/
 
 /**
  * @swagger
@@ -83,7 +94,7 @@ module.exports = router;
  *   put:
  *     tags:
  *       - users
- *     summary: Updates the user data
+ *     summary: Updates the user data by id
  *     parameters:
  *       - in: path
  *         name: userId
@@ -94,11 +105,18 @@ module.exports = router;
  *     requestBody:
  *        required: true
  *        content:
- *          application/json:
- *            schema:
- *              $ref: "#/components/schemas/User"
+ *          multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               image:
+ *                 type: string
+ *                 format: binary
+ *               user:
+ *                 schema:
+ *                   $ref: "#/components/schemas/User"
  *     responses:
- *       "500":
+ *       "400":
  *         description: Error
  *       "200":
  *         description: Success
@@ -112,10 +130,10 @@ module.exports = router;
 /**
  * @swagger
  *  /users/{token}:
- *   put:
+ *   get:
  *     tags:
  *       - users
- *     summary: Updates the user data
+ *     summary: Gets user by Token
  *     requestBody:
  *        required: true
  *        content:
@@ -123,7 +141,7 @@ module.exports = router;
  *            schema:
  *              $ref: "#/components/schemas/User"
  *     responses:
- *       "500":
+ *       "400":
  *         description: Error
  *       "200":
  *         description: Success
@@ -134,25 +152,6 @@ module.exports = router;
 */
 
 
-/**
- * @swagger
- *  /courses/{coursesId}:
- *   get:
- *     tags:
- *       - users
- *     summary: Returns the full list of courses
- *     responses:
- *       "500":
- *         description: Error
- *       "200":
- *         description: Success
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Course'
-*/
 
 /**
  * @swagger
@@ -271,4 +270,5 @@ module.exports = router;
  *            items:
  *              type: string
  *              description: courseId
+ *
 */

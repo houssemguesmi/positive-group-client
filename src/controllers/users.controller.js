@@ -17,7 +17,7 @@ module.exports = {
       let newUser = await repository.findOneAndUpdate({ _id: req.params.userId }, req.body.payload, User);
       res.status(200).send(newUser);
     } catch (e) {
-      res.status(500).send(e);
+      res.status(400).send(e);
     }
   },
 
@@ -27,7 +27,7 @@ module.exports = {
       let user = await repository.findOne({ email: userEmail }, User);
       res.status(200).send(user);
     } catch (e) {
-      res.status(500).send(e);
+      res.status(400).send(e);
     }
   },
 
@@ -104,7 +104,7 @@ module.exports = {
       res.status(200).send(user)
     } catch (error) {
       console.error(error);
-      res.status(500).send(error)
+      res.status(400).send(error)
     }
   },
 
