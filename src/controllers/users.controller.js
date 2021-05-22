@@ -12,26 +12,18 @@ const Course = require("../models/Course");
 
 module.exports = {
 
-  updateUser: async (req, res) => {
-    try {
-      let newUser = await repository.findOneAndUpdate({ _id: req.params.userId }, req.body.payload, User);
-      res.status(200).send(newUser);
-    } catch (e) {
-      res.status(400).send(e);
-    }
-  },
+  updateUser: catchAsync(async (req, res) => {
+    let newUser = await repository.findOneAndUpdate({ _id: req.params.userId }, req.body.payload, User);
+    res.status(200).send(newUser);
+  }),
 
-  getUserByToken: async (req, res) => {
-    try {
-      let userEmail = jwtDecode(req.params.token).email;
-      let user = await repository.findOne({ email: userEmail }, User);
-      res.status(200).send(user);
-    } catch (e) {
-      res.status(400).send(e);
-    }
-  },
+  getUserByToken: catchAsync(async (req, res) => {
+    let userEmail = jwtDecode(req.params.token).email;
+    let user = await repository.findOne({ email: userEmail }, User);
+    res.status(200).send(user);
+  }),
 
-  getInvitees: async (req, res) => {
+  getInvitees: catchAsync(async (req, res) => {
     // Get user id from params
     let userId = req.params.userId;
 
@@ -88,40 +80,29 @@ module.exports = {
 
     res.send(response)
 
-  },
+  }),
 
-  activateAccount: async (req, res) => {
-    try {
-      let userId = req.params.userId;
-      let codeUsedBy = await ActivationCode.findOne({ code: req.body.code }, 'usedBy');
-      if (!codeUsedBy) {
-        await ActivationCode.findOneAndUpdate({ code: req.body.code }, { usedBy: userId });
-      } else {
-        res.status(405).send("Code is already used!")
-      }
-      let user = await User.findByIdAndUpdate({ _id: userId }, { isActivated: true })
-      console.log(user)
-      res.status(200).send(user)
-    } catch (error) {
-      console.error(error);
-      res.status(400).send(error)
+  activateAccount: catchAsync(async (req, res) => {
+    let userId = req.params.userId;
+    let codeUsedBy = await ActivationCode.findOne({ code: req.body.code }, 'usedBy');
+    if (!codeUsedBy) {
+      await ActivationCode.findOneAndUpdate({ code: req.body.code }, { usedBy: userId });
+    } else {
+      res.status(405).send("Code is already used!")
     }
-  },
+    let user = await User.findByIdAndUpdate({ _id: userId }, { isActivated: true })
+    res.status(200).send(user)
+  }),
 
-  updateUser: async (req, res) => {
-    try {
-      const newUserData = req.body;
-      // If the user uploaded a new image, call cloudinary API to save the new image
-      newUserData.image = req.file ?
-        await filesRepository.saveFileToCloudinary("category", req.file.path, req.body.name)
-        // Otherwise, we keep the same old image 
-        : newUserData.image;
-      const updatedUser = await repository.updateOne(User, req.params.userId, newUserData)
-      res.status(200).send(updatedUser)
-    } catch (error) {
-      console.error(error)
-      res.status(400).send(error)
-    }
-  }
+  updateUser: catchAsync(async (req, res) => {
+    const newUserData = req.body;
+    // If the user uploaded a new image, call cloudinary API to save the new image
+    newUserData.image = req.file ?
+      await filesRepository.saveFileToCloudinary("category", req.file.path, req.body.name)
+      // Otherwise, we keep the same old image 
+      : newUserData.image;
+    const updatedUser = await repository.updateOne(User, req.params.userId, newUserData)
+    res.status(200).send(updatedUser)
+  })
 
 };

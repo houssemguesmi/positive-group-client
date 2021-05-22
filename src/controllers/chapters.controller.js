@@ -1,36 +1,25 @@
 const Chapter = require("../models/Chapter");
 const Course = require("../models/Course");
 const repository = require("../repositories/base.repository");
+const catchAsync = require("../utils/catchAsync")
 
 module.exports = {
 
-  getAllChapters: async (req, res) => {
-    try {
-      const chapters = await repository.findAll(Chapter);
-      res.status(200).send(chapters);
-    } catch (e) {
-      console.error(e);
-      res.status(400).send("Error")
-    }
-  },
+  getAllChapters: catchAsync(async (req, res) => {
+    const chapters = await repository.findAll(Chapter);
+    res.status(200).send(chapters);
+  }),
 
-  getChaptersByCourse: async (req, res) => {
-    try {
-      const course = await repository.findOneById(req.params.courseId, Course);
-      const chapters = await repository.find({ course: course.name }, Chapter);
-      res.status(200).send(chapters);
-    } catch (e) {
-      res.status(400).send("Error")
-    }
-  },
+  getChaptersByCourse: catchAsync(async (req, res) => {
+    const course = await repository.findOneById(req.params.courseId, Course);
+    const chapters = await repository.find({ course: course.name }, Chapter);
+    res.status(200).send(chapters);
+  }),
 
-  getChapterById: async (req, res) => {
-    try {
-      const chapter = await repository.findOneById(req.params.chapterId, Chapter);
-      res.status(200).send(chapter);
-    } catch (e) {
-      res.status(400).send("Error")
-    }
-  },
+  getChapterById: catchAsync(async (req, res) => {
+    const chapter = await repository.findOneById(req.params.chapterId, Chapter);
+    res.status(200).send(chapter);
+
+  }),
 
 };
