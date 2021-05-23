@@ -215,7 +215,9 @@ module.exports = router;
  *             type: boolean
  *           invitees:
  *             type: array
- *           inviter:
+ *           inviterCode:
+ *             type: string
+ *           inviterEmail:
  *             type: string
  *           bonus:
  *             type: string

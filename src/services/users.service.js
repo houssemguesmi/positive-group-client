@@ -1,31 +1,54 @@
 const catchAsync = require("../utils/catchAsync");
 const baseRepository = require("../repositories/base.repository")
 const { generateCode } = require("../helpers");
+const { initializeUser } = require("../helpers/initializeUser")
 
 module.exports = {
-    createNewUser = async (userData, inviterCode) => {
+
+    createUninvitedUser: async (userData) => {
+        try {
+            userData = initializeUser(userData)
+            return repository.save(userData, User);
+        } catch (error) {
+            console.error(error)
+        }
+    },
+
+    createNewUserInvitedByCode: async (userData, inviterCode) => {
         try {
 
-            // Generating a code for the new user
-            let newUserCode = generateCode()
-
             // Adding the generated code to the user
-            userData["code"] = newUserCode;
+            userData["code"] = generateCode();
 
-            if (inviterCode) {
-
-                // Getting the invitor via his invitation code
-                const inviter = await repository.findOne({ code: inviterCode }, User);
-                userData["inviter"] = inviter._id;
-            }
-
-            // Hashing the password
-            let hashedPassword = await bcrypt.hash(userData.password, 10);
+            // Getting the invitor via his invitation code
+            const inviter = await repository.findOne({ code: inviterCode }, User);
 
             // Storing the inviterId in the new user
-            userData["password"] = hashedPassword
-            userData["accountType"] = "free";
-            userData["invitees"] = []
+            userData["inviterCode"] = inviter._id;
+
+            // Initializing the new user
+            userData = initializeUser(userData)
+
+            // Storing the user
+            return repository.save(userData, User);
+
+
+        } catch (error) {
+            console.error(error)
+        }
+    },
+
+    createNewUserInvitedByEmail: async (userData, inviterEmail) => {
+        try {
+
+            // Adding the generated code to the user
+            userData["code"] = generateCode();
+
+            // Getting the invitor via his invitation code
+            const inviter = await repository.findOne({ email: inviterEmail }, User);
+            userData["inviterEmail"] = inviter._id;
+
+            userData = initializeUser(userData)
 
             // Storing the user
             return repository.save(userData, User);
@@ -35,4 +58,5 @@ module.exports = {
             console.error(error)
         }
     }
+
 }

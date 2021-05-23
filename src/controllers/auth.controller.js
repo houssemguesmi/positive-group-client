@@ -33,11 +33,27 @@ module.exports = {
     signup: catchAsync(async (req, res) => {
 
         let inviterCode = req.body.code;
+        let inviterEmail = req.body.email;
+        let isInvited = inviterCode || inviterEmail;
         let userData = req.body;
 
-        const user = await usersService.createNewUser(userData, inviterCode)
+        let user = null;
 
-        inviterCode && await User.findByIdAndUpdate({ _id: userData.inviter }, { $push: { invitees: user._id } })
+        if (isInvited) {
+            user = (inviterCode) ?
+                await usersService.createNewUserInvitedByCode(
+                    userData,
+                    inviterCode
+                ) :
+                await usersService.createNewUserInvitedByEmail(
+                    userData,
+                    inviterEmail
+                )
+        } else {
+            user = await usersService.createUninvitedUser(userData)
+        }
+
+        isInvited && await User.findByIdAndUpdate({ _id: userData.inviter }, { $push: { invitees: user._id } })
 
         // Sending back the response
         res.status(201).send(user);
