@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const catchAsync = require("../utils/catchAsync")
 
-const { generateCode } = require("../helpers");
+const usersService = require("../services/users.service")
 
 module.exports = {
 
@@ -31,37 +31,16 @@ module.exports = {
     }),
 
     signup: catchAsync(async (req, res) => {
+
         let inviterCode = req.body.code;
         let userData = req.body;
 
-        // Generating a code for the new user
-        let newUserCode = generateCode()
-
-        // Adding the generated code to the user
-        userData["code"] = newUserCode;
-
-        if (inviterCode) {
-
-            // Getting the invitor via his invitation code
-            const inviter = await repository.findOne({ code: inviterCode }, User);
-            userData["inviter"] = inviter._id;
-        }
-
-        // Hashing the password
-        let hashedPassword = await bcrypt.hash(userData.password, 10);
-
-        // Storing the inviterId in the new user
-        userData["password"] = hashedPassword
-        userData["isActivated"] = false;
-        userData["invitees"] = []
-
-        // Storing the user
-        const user = await repository.save(userData, User);
+        const user = await usersService.createNewUser(userData, inviterCode)
 
         inviterCode && await User.findByIdAndUpdate({ _id: userData.inviter }, { $push: { invitees: user._id } })
 
         // Sending back the response
-        res.status(201).send("Created!");
+        res.status(201).send(user);
     }),
 
     updatePassword: catchAsync(async (req, res) => {
