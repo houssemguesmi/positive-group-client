@@ -9,9 +9,7 @@ const usersService = require("../services/users.service")
 module.exports = {
 
     login: catchAsync(async (req, res) => {
-        console.log(req.body.email)
         const userData = await repository.findOne({ email: req.body.email }, User);
-        console.log(userData)
         const user = { email: userData.email };
         if (await bcrypt.compare(req.body.password, userData.password)) {
             jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, (err, token) => {
@@ -32,9 +30,9 @@ module.exports = {
 
     signup: catchAsync(async (req, res) => {
 
-        let inviterCode = req.body.code;
-        let inviterEmail = req.body.email;
-        let isInvited = inviterCode || inviterEmail;
+        let inviterCode = req.body.inviterCode;
+        let inviterEmail = req.body.inviterEmail;
+        let isInvited = !!inviterCode || !!inviterEmail;
         let userData = req.body;
 
         let user = null;
@@ -56,7 +54,7 @@ module.exports = {
         isInvited && await User.findByIdAndUpdate({ _id: userData.inviter }, { $push: { invitees: user._id } })
 
         // Sending back the response
-        res.status(201).send(user);
+        res.status(201).send({ user: user, message: "Created" });
     }),
 
     updatePassword: catchAsync(async (req, res) => {

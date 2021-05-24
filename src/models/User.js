@@ -27,7 +27,8 @@ const userSchema = new Schema({
   code: { type: String, required: true },
   courses: { type: Array, default: [] },
   courseRequests: { type: Array, default: [] },
-  image: { type: String, default: null }
+  image: { type: String, default: null },
+  isDefaultInviter: { type: Boolean, default: false }
 });
 
 const User = mongoose.model("User", userSchema);
