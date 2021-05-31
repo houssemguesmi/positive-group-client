@@ -6,7 +6,7 @@ const upload = require("../middlewares/multer")
 
 // router.post("/bonus/:id", usersController.generateCode)
 
-router.get("/bonus/:userId", usersController.getInvitees)
+// router.get("/bonus/:userId", usersController.getInvitees)
 router.put("/activate-account/:userId", usersController.activateAccount)
 
 router.post("/activation/:userId", requestsController.requestActivation)
@@ -59,32 +59,6 @@ module.exports = router;
  *         description: Error
  *       "200":
  *         description: Success
-*/
-
-
-/**
- * @swagger
- *  /users/bonus/{userId}:
- *   get:
- *     tags:
- *       - users
- *     summary: Gets the full bonus tree of the user
- *     parameters:
- *       - in: path
- *         name: userId
- *         schema:
- *           type: string
- *         required: true
- *         description: id of the user
- *     responses:
- *       "400":
- *         description: Error
- *       "200":
- *         description: Success
- *         content:
- *           application/json:
- *             schema:
- *               $ref: "#/components/schemas/BonusTree"
 */
 
 
@@ -158,58 +132,6 @@ module.exports = router;
  *  components:
  *
  *    schemas:
- *
- *      BonusTree:
- *        type: object
- *        properties:
- *          level1Invitees:
- *            type: array
- *            items:
- *              $ref: '#/components/schemas/Invitee'
- *          level2Invitees:
- *            type: array
- *            items:
- *              $ref: '#/components/schemas/Invitee'
- *          level3Invitees:
- *            type: array
- *            items:
- *              $ref: '#/components/schemas/Invitee'
- *          level4Invitees:
- *            type: array
- *            items:
- *              $ref: '#/components/schemas/Invitee'
- *          level5Invitees:
- *            type: array
- *            items:
- *              $ref: '#/components/schemas/Invitee'
- *          level6Invitees:
- *            type: array
- *            items:
- *              $ref: '#/components/schemas/Invitee'
- *          level7Invitees:
- *            type: array
- *            items:
- *              $ref: '#/components/schemas/Invitee'
- *          level8Invitees:
- *            type: array
- *            items:
- *              $ref: '#/components/schemas/Invitee'
- *          level9Invitees:
- *            type: array
- *            items:
- *              $ref: '#/components/schemas/Invitee'
- *          level10Invitees:
- *            type: array
- *            items:
- *              $ref: '#/components/schemas/Invitee'
- *
- *      Invitee:
- *        type: object
- *        properties:
- *          inviteeId:
- *            type: string
- *          isActivated:
- *            type: boolean
  *
  *      User:
  *        type: object
