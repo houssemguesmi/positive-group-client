@@ -31,7 +31,7 @@ module.exports = {
     } else {
       res.status(405).send("Code is already used!")
     }
-    let user = await User.findByIdAndUpdate({ _id: userId }, { isActivated: true })
+    let user = await User.findByIdAndUpdate({ _id: userId }, { accountType: "premium" })
     res.status(200).send(user)
   }),
 

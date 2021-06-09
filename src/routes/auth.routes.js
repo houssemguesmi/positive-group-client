@@ -211,8 +211,8 @@ module.exports = router;
  *             type: string
  *           password:
  *             type: string
- *           isActivated:
- *             type: boolean
+ *           accountType:
+ *             type: enum
  *           invitees:
  *             type: array
  *           inviterCode:

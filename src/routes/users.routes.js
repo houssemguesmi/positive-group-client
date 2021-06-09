@@ -160,9 +160,9 @@ module.exports = router;
  *          password:
  *            description: password of the user
  *            type: string
- *          isActivated:
- *            description: is the account activated
- *            type: boolean
+ *          accountType:
+ *            description: is the account free, premium, or pending
+ *            type: enum
  *          invitees:
  *            description: users invited by this user (level1)
  *            type: array
