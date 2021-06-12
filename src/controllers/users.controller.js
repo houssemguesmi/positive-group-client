@@ -28,6 +28,11 @@ module.exports = {
     res.status(200).send(user);
   }),
 
+  getUserByIdOrEmail: catchAsync(async (req, res) => {
+    let user = await repository.findOne(req.body, User);
+    res.status(200).send(user);
+  }),
+  
   activateAccount: catchAsync(async (req, res) => {
     let userId = req.params.userId;
     let codeUsedBy = await ActivationCode.findOne(

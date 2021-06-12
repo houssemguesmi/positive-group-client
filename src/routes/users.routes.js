@@ -10,7 +10,7 @@ const upload = require("../middlewares/multer");
 router.put("/activate-account/:userId", usersController.activateAccount);
 
 router.post("/activation/:userId", requestsController.requestActivation);
-
+router.post("/findUser", usersController.getUserByIdOrEmail);
 router.get("/:token", usersController.getUserByToken);
 router.put("/:userId", usersController.updateUser);
 
